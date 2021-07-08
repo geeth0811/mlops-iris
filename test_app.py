@@ -24,3 +24,19 @@ def test_pred_virginica():
         # asserting the correct response is received
         assert response.status_code == 200
         assert response.json() == {"flower_class": "Iris Virginica"}
+
+
+#Task2 Writing test cases
+def test_iris():
+    with TestClient(app) as client:
+        response = client.get("/iris")
+        # asserting the correct response is received
+        assert response.status_code == 200
+        assert response.json() == {"iris": "This is a iris prediction page"}
+
+def test_predction():
+    with TestClient(app) as client:
+        response = client.get("/predction")
+        # asserting the correct response is received
+        assert response.status_code == 200
+        assert response.json() == {"predction": "Iris flowwer predcited successfully"}

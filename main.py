@@ -3,9 +3,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from ml_utils import load_model, predict, retrain
 from typing import List
+#Task4 for adding time stamps we are importing the datetime lib.
+import datetime
 
 # defining the main app
-app = FastAPI(title="Iris Predictor", docs_url="/")
+app = FastAPI(title="Iris Predictor Version by Geeth", docs_url="/")
 
 # calling the load_model during startup.
 # this will train the model and keep it loaded for prediction.
@@ -22,6 +24,8 @@ class QueryIn(BaseModel):
 # class which is returned in the response
 class QueryOut(BaseModel):
     flower_class: str
+    #adding the timestamp as an attribute in the output model
+    run_Time_timestamp : str
 
 # class which is expected in the payload while re-training
 class FeedbackIn(BaseModel):
@@ -35,7 +39,7 @@ class FeedbackIn(BaseModel):
 @app.get("/ping")
 # Healthcheck route to ensure that the API is up and running
 def ping():
-    return {"ping": "pong"}
+    return {"ping": "pong", "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 
 @app.post("/predict_flower", response_model=QueryOut, status_code=200)
@@ -43,8 +47,8 @@ def ping():
 # Payload: QueryIn containing the parameters
 # Response: QueryOut containing the flower_class predicted (200)
 def predict_flower(query_data: QueryIn):
-    output = {"flower_class": predict(query_data)}
-    return output
+    #output = {"flower_class": predict(query_data)}
+    return {"flower_class": predict(query_data), "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 @app.post("/feedback_loop", status_code=200)
 # Route to further train the model based on user input in form of feedback loop
@@ -52,10 +56,10 @@ def predict_flower(query_data: QueryIn):
 # Response: Dict with detail confirming success (200)
 def feedback_loop(data: List[FeedbackIn]):
     retrain(data)
-    return {"detail": "Feedback loop successful"}
+    return {"detail": "Feedback loop successful", "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 
 # Main function to start the app when main.py is called
 if __name__ == "__main__":
     # Uvicorn is used to run the server and listen for incoming API requests on 0.0.0.0:8888
-    uvicorn.run("main:app", host="0.0.0.0", port=8888, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

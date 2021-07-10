@@ -1,10 +1,10 @@
-# ML-Ops Demo/Assignment
+# ML-Ops Demo/Assignment by Geethanadh Sunkara
 
 This repository contains code which demonstrates ML-Ops using a `FastAPI` application which predicts the flower class using the IRIS dataset (https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html)
 
 ## Running Instructions
 - Create a fork of the repo using the `fork` button.
-- Clone your fork using `git clone https://www.github.com/<your-username>/mlops-iris.git`
+- Clone your fork using `git clone https://github.com/geeth0811/mlops-iris`
 - Install dependencies using `pip3 install requirements.txt`
 - Run application using `python3 main.py`
 - Run tests using `pytest`

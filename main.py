@@ -39,7 +39,7 @@ class FeedbackIn(BaseModel):
 @app.get("/ping")
 # Healthcheck route to ensure that the API is up and running
 def ping():
-    return {"ping": "pong", "run_Time_timestamp":str(datetime.datetime.now())}
+    return {"ping": "pong", "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 
 @app.post("/predict_flower", response_model=QueryOut, status_code=200)
@@ -48,7 +48,7 @@ def ping():
 # Response: QueryOut containing the flower_class predicted (200)
 def predict_flower(query_data: QueryIn):
     #output = {"flower_class": predict(query_data)}
-    return {"flower_class": predict(query_data), "run_Time_timestamp":str(datetime.datetime.now())}
+    return {"flower_class": predict(query_data), "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 @app.post("/feedback_loop", status_code=200)
 # Route to further train the model based on user input in form of feedback loop
@@ -56,7 +56,7 @@ def predict_flower(query_data: QueryIn):
 # Response: Dict with detail confirming success (200)
 def feedback_loop(data: List[FeedbackIn]):
     retrain(data)
-    return {"detail": "Feedback loop successful", "run_Time_timestamp":str(datetime.datetime.now())}
+    return {"detail": "Feedback loop successful", "run_Time_timestamp":str(datetime.datetime.now().replace(microsecond=0))}
 
 
 # Main function to start the app when main.py is called
